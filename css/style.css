@@ -1,0 +1,96 @@
+body {
+    background-color: #22254b;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+
+.grid {
+    display: grid;
+    padding: 1.5% 1.5%;
+    gap: 1%;
+    grid-template-columns: repeat(5, 19.2%);
+    background: rgba(191, 182, 182, 0.15);
+
+}
+
+.card {
+    background-color: black;
+    box-shadow: 0 5px 6px black;
+    margin-bottom: 10px;
+}
+#description .movie-name {
+    max-height: 40px;
+}
+#description {
+    height: 100%;
+    grid-column: 5;
+    grid-row: 1 / 3;
+    background-color: rgba(191, 182, 182, 0.15);
+}
+
+.fav-btn {
+    border: none;
+    background-color: transparent;
+    color: rgb(197, 188, 188);
+    cursor: pointer;
+
+    font-size: 1.2rem;
+    padding: 0;
+    margin: 0;
+}
+
+.fav-btn.active {
+    color: #e05454;
+}
+
+body {
+    padding: 5px 7.5%;
+}
+
+
+.card img {
+    overflow: hidden;
+    width: 100%;
+    height: 92.5%;
+    object-fit: cover;
+    display: block;
+}
+
+.card .fav-btn {
+    font-size: 1.3em;
+}
+
+.movie-name {
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    height: 7.5%;
+    align-items: center;
+    background: #3951b0;
+}
+
+.movie-name.active {
+    background: #5d76cb;
+}
+
+h1 {
+    color: white;
+    width: 100%;
+}
+
+h3 {
+    color: white;
+    padding: 0;
+}
+
+.card .info {
+    width: 100%;
+    height: 7.5%;
+    margin: 0;
+    background: #5d76cb;
+}
+
+.dark-mode {
+    background-color: white;
+    color: black;
+}
