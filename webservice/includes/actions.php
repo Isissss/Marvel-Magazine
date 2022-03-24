@@ -28,7 +28,7 @@ function getDishes()
         [
             "id" => 5,
             "name" => "Guardians of the Galaxy",
-            "cover" => "https://m.media-amazon.com/images/M/MV5BMTAwMjU5OTgxNjZeQTJeQWpwZ15BbWU4MDUxNDYxODEx._V1_.jpg",
+            "cover" => "https://m.media-amazon.com/images/M/MV5BMTAwMjU5OTgxNjZeQTJeQWpwZ15BbWU4MDUxNDYxODEx._V1_.jpg"
         ],
         [
             "id" => 6,
@@ -44,65 +44,43 @@ function getDishes()
 }
 
 
-//function getDishes()
-//{
-//    return [
-//        [
-//            "id" => 1,
-//            "name" => "Pizza",
-//            "kitchen" => "Italian",
-//        ],
-//        [
-//            "id" => 2,
-//            "name" => "Kale",
-//            "kitchen" => "Dutch",
-//        ],
-//        [
-//            "id" => 3,
-//            "name" => "Lasagna",
-//            "kitchen" => "Italian",
-//        ],
-//        [
-//            "id" => 4,
-//            "name" => "Kebab",
-//            "kitchen" => "Turkish",
-//        ],
-//        [
-//            "id" => 5,
-//            "name" => "Paella",
-//            "kitchen" => "Spanish",
-//        ]
-//    ];
-//}
-//
-///**
-// * @param $id
-// * @return mixed
-// */
-//function getDishDetails($id)
-//{
-//    $tags = [
-//        1 => [
-//            "recipe" => "Put it in the oven and go!",
-//            "tags" => ['cheese', 'oven']
-//        ],
-//        2 => [
-//            "recipe" => "You can make this delicious Dutch meal by ...",
-//            "tags" => ['unox', 'healthy', 'stamppot', 'boerenkool']
-//        ],
-//        3 => [
-//            "recipe" => "Very nice when your grandma prepares this meal",
-//            "tags" => ['omnomnom']
-//        ],
-//        4 => [
-//            "recipe" => "Everytime in the city after midnight",
-//            "tags" => ['kapsalon', 'tasty', 'meat']
-//        ],
-//        5 => [
-//            "recipe" => "Specialty when on holiday in Spain",
-//            "tags" => ['fish']
-//        ],
-//    ];
-//
-//    return $tags[$id];
-//}
+
+/**
+ * @param $id
+ * @return mixed
+ */
+function getDishDetails($id)
+{
+    $tags = [
+        1 => [
+            "desc" => "After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+            "tags" => ['cheese', 'oven']
+        ],
+        2 => [
+            "desc" => "You can make this delicious Dutch meal by ...",
+            "tags" => ['unox', 'healthy', 'stamppot', 'boerenkool']
+        ],
+        3 => [
+            "desc" => "Very nice when your grandma prepares this meal",
+            "tags" => ['omnomnom']
+        ],
+        4 => [
+            "desc" => "Everytime in the city after midnight",
+            "tags" => ['kapsalon', 'tasty', 'meat']
+        ],
+        5 => [
+            "desc" => "Specialty when on holiday in Spain",
+            "tags" => ['fish']
+        ],
+        6 => [
+            "desc" => "Specialty when on holiday in Spain",
+            "tags" => ['fish']
+        ],
+        7 => [
+            "desc" => "Specialty when on holiday in Spain",
+            "tags" => ['fish']
+        ],
+    ];
+
+    return $tags[$id];
+}

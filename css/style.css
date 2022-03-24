@@ -2,17 +2,17 @@ body {
     background-color: #22254b;
     font-family: "Poppins", sans-serif;
     margin: 0;
-    color:white;
-    padding: 5px 7.5% 5vh;
+    color: white;
+
 }
 
 .grid {
     display: grid;
-    padding: 1.5% 1.5%;
     gap: 1%;
     grid-template-columns: repeat(5, 19.2%);
-    background: rgba(191, 182, 182, 0.15);
-    box-shadow: 0 5px 6px black;
+    /*background: rgba(191, 182, 182, 0.15);*/
+    /*box-shadow: 0 5px 6px black;*/
+    padding: 3vh 7.5% 5vh;
 }
 
 .card {
@@ -25,7 +25,7 @@ body {
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
-    padding:5%;
+    padding: 5%;
 }
 
 #description {
@@ -42,22 +42,29 @@ body {
     background-color: transparent;
     color: rgb(197, 188, 188);
     cursor: pointer;
-
     font-size: 1.2rem;
 
 }
+
 .fas, .fa-heart {
     pointer-events: none;
 }
-.fav-btn.active {
+
+.fav-btn.active, .fav-btn:hover {
     color: #e05454;
+    font-size: 1.2rem;
 }
 
-
-.cover {
-    padding:0;
+h4 {
     margin: 0;
 }
+
+.cover {
+    padding: 0;
+    margin: 0;
+}
+
+
 img {
     overflow: hidden;
     width: 100%;
@@ -71,23 +78,31 @@ img {
 }
 
 .movie-name {
-    max-height: 40px;
     padding: 0 10px;
     display: flex;
     justify-content: space-between;
     height: 9.5%;
     align-items: center;
     background: #3951b0;
+
 }
 
 .movie-name.active {
     background: #5d76cb;
 }
 
-h1 {
+header {
     width: 100%;
-    color:white;
+    color: white;
+    background: rgba(93, 118, 203, 0.37);
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.0em;
 }
+
 
 h3 {
     padding: 0;
@@ -100,21 +115,26 @@ h3 {
     background: #5d76cb;
 }
 
-.dark-mode {
+.light-mode {
     background: white;
 }
 
-.dark-mode .movie-info, .dark-mode h1 {
+.light-mode .movie-info {
     color: black;
-
-
 }
-.dark-mode #description {
+
+.light-mode #description {
     background: rgba(93, 118, 203, 0.27);
 }
 
-.dark-mode .grid {
-    background: rgba(93, 118, 203, 0.37);
-    box-shadow: 0 5px 6px black;
+.light-mode .grid {
+    /*    background: rgba(93, 118, 203, 0.37);*/
+    /*    box-shadow: 0 5px 6px black;*/
+
+}
+
+.light-mode header {
+    background: #5d76cb;
+
 
 }
