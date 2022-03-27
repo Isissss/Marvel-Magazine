@@ -9,12 +9,30 @@ body {
 .grid {
     display: grid;
     gap: 1%;
-    grid-template-columns: repeat(5, 19.2%);
+    grid-template-columns: repeat(4, 24%);
     /*background: rgba(191, 182, 182, 0.15);*/
     /*box-shadow: 0 5px 6px black;*/
-    padding: 3vh 7.5% 5vh;
+    padding: 3vh 17.5% 5vh;
+}
+#myBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background: #3951b0;
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
 }
 
+#myBtn:hover {
+    background: #5d76cb;
+}
 .card {
     background-color: black;
     box-shadow: 0 5px 6px black;
@@ -25,16 +43,21 @@ body {
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
-    padding: 5%;
+    padding-left: 2%;
+    padding-top: 2%;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #description {
     height: 100%;
-    grid-column: 5;
-    grid-row: 1 / 3;
-    background-color: rgba(191, 182, 182, 0.15);
+    grid-column: 3 / 5;
+    grid-row: 1;
+    background: rgba(93, 118, 203, 0.34);
     box-shadow: none;
 
+}
+#infopic {
+    width: 70%;
 }
 
 .fav-btn {
@@ -43,7 +66,6 @@ body {
     color: rgb(197, 188, 188);
     cursor: pointer;
     font-size: 1.2rem;
-
 }
 
 .fas, .fa-heart {
@@ -63,7 +85,22 @@ h4 {
     padding: 0;
     margin: 0;
 }
+span {
+    font-weight: bold;
+    font-size: 1.2em;
+}
 
+.green {
+    color: #10de10;
+}
+
+.red {
+    color:Red;
+}
+
+.orange {
+    color:orange;
+}
 
 img {
     overflow: hidden;
@@ -72,6 +109,11 @@ img {
     object-fit: cover;
     display: block;
 }
+
+ p {
+     padding: 0;
+     margin: 0.25rem 0 1rem;
+ }
 
 .card .fav-btn {
     font-size: 1.3em;
@@ -84,7 +126,12 @@ img {
     height: 9.5%;
     align-items: center;
     background: #3951b0;
+}
 
+.movie-info img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
 }
 
 .movie-name.active {
@@ -95,7 +142,7 @@ header {
     width: 100%;
     color: white;
     background: rgba(93, 118, 203, 0.37);
-    height: 10vh;
+    height: 7.5vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,6 +153,7 @@ header {
 
 h3 {
     padding: 0;
+    margin:0;
 }
 
 .card .info {
@@ -124,7 +172,7 @@ h3 {
 }
 
 .light-mode #description {
-    background: rgba(93, 118, 203, 0.27);
+    background: rgba(220, 220, 225, 0.89);
 }
 
 .light-mode .grid {

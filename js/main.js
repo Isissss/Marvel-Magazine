@@ -9,44 +9,75 @@ window.addEventListener('load', init);
 //
 // }
 //Global vars
-let element = document.body
 let grid
-let details = document.querySelector('.movie-info');
-let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
-let button
+let details
 let favorites
+let body
 let movieInfo
+let button
 let movieCard
-
+let random
+let moviename
+let apikey = "c196ca2fae8666873c3683d32b8d6cf4"
+let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
 /**
  * Execute after document is fully loaded
  */
 function init() {
-
     checkLightMode();
-    getFavoritesFromLS();
     getMovieData(apiUrl, createMovieCards);
 
-    let button = document.getElementById('switch');
-    button.addEventListener('click', lightModeToggle);
+    favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    let lightswitch = document.getElementById('switch');
+    lightswitch.addEventListener('click', lightModeToggle);
+
+    details = document.querySelector('.movie-info');
+
+    body = document.querySelector("body");
 
     grid = document.querySelector('.grid');
-    grid.addEventListener("click", gridClickHandler)
+    // // grid.addEventListener("click", gridClickHandler)
+
+    mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+    window.addEventListener("scroll", e => {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+    })
+
+    grid.addEventListener("click", e => {
+        let target = e.target;
+
+        if (target.nodeName === "BUTTON") {
+            if (target.classList.contains("active")) {
+                removeFavorite(target);
+            } else {
+                addFavorite(target)
+            }
+        } else if (target.nodeName === "IMG" && (target.id !== 'infopic')) {
+            getMovieData(`${apiUrl}?id=${target.dataset.id}&append_to_response=images`, ShowDetails);
+            movieName = target.parentNode.querySelector(".movie-name > h3");
+        }
+    })
 
     let selector = document.querySelector(".filter-movies")
     selector.addEventListener("click", filterMovies)
 }
 
-function checkLightMode() {
-    let lightMode = localStorage.getItem('lightMode');
-    if (lightMode === "true") {
-        element.classList.add("light-mode");
-    }
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
 
-function getFavoritesFromLS() {
-    favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    console.log(favorites)
+function checkLightMode() {
+    if (localStorage.getItem('lightMode') === "true") {
+        document.querySelector("body").classList.add("light-mode");
+    }
 }
 
 function getMovieData(url, succesHandler) {
@@ -66,14 +97,12 @@ function createMovieCards(data) {
     for (let movie of data) {
         movieCard = document.createElement('div');
         movieCard.classList.add('card');
-        movieCard.dataset.id = movie.id;
 
         movieInfo = document.createElement('div');
         movieInfo.classList.add('movie-name');
 
         let title = document.createElement('h3');
         title.innerHTML = movie.name;
-
         movieInfo.appendChild(title);
 
         button = document.createElement('button');
@@ -82,12 +111,11 @@ function createMovieCards(data) {
 
         let favorite = document.createElement("i")
         favorite.classList.add("fas", "fa-heart");
+        button.appendChild(favorite);
 
         checkIfFavorite(button.dataset.id);
 
-        button.appendChild(favorite)
         movieInfo.appendChild(button);
-
         movieCard.appendChild(movieInfo);
 
         let image = document.createElement('img');
@@ -102,14 +130,13 @@ function createMovieCards(data) {
 
 function checkIfFavorite(id) {
     let index = favorites.indexOf(id);
-    console.log(index);
+
     if (index === -1) {
-        return
+        return;
     }
     movieCard.classList.add("fave");
     button.classList.add("active");
     movieInfo.classList.add("active");
-
 }
 
 function ajaxErrorHandler(data) {
@@ -125,13 +152,11 @@ const lightModeToggle = () => {
 
     if (lightMode === "true") {
         localStorage.setItem('lightMode', "false");
-        element.classList.remove("light-mode");
+        body.classList.remove("light-mode");
     } else {
         localStorage.setItem('lightMode', "true");
-        element.classList.add("light-mode");
+        body.classList.add("light-mode");
     }
-
-
 }
 
 function ShowDetails(data) {
@@ -141,32 +166,57 @@ function ShowDetails(data) {
     title.innerHTML = "Description"
     details.appendChild(title)
 
-    let recipe = document.createElement("p")
-    recipe.innerHTML = `${data.desc}`
-    details.appendChild(recipe)
+    let desc = document.createElement("p")
+    desc.innerHTML = `${data.desc}`
+    details.appendChild(desc)
 
-    title = document.createElement('h4')
-    title.innerHTML = "Tags"
-    details.appendChild(title)
+    let title2 = document.createElement('h4')
+    title2.innerHTML = "Tags"
+    details.appendChild(title2)
 
     let tags = document.createElement("p")
-    tags.innerHTML = `${data.tags}`
+    tags.innerHTML = data.tags.join(", ")
     details.appendChild(tags)
+
+    getMovieData(`https://api.themoviedb.org/3/movie/${data.mdbID}?api_key=${apikey}&append_to_response=images&include_image_language=en,null`, getRating)
+
 }
 
-function gridClickHandler(e) {
-    let target = e.target;
+function getRating (data) {
+    let year = new Date(data.release_date);
+    year = year.getFullYear();
 
-    if (target.nodeName === "BUTTON") {
-        if (target.classList.contains("active")) {
-            removeFavorite(target);
-        } else {
-            addFavorite(target)
-        }
-    } else if (target.nodeName === "IMG") {
-        getMovieData(`${apiUrl}?id=${target.dataset.id}`, ShowDetails);
+    let infoheader = document.querySelector('#movie-name');
+    infoheader.innerHTML = " "
 
+    let paragraph = document.createElement("h3");
+    paragraph.innerHTML = `${movieName.innerHTML} (${year}) `
+
+    let rating = document.createElement('span');
+    rating.innerHTML = data.vote_average;
+
+    switch (true) {
+        case (data.vote_average > 7.4):
+            rating.classList.add("green");
+            break;
+        case (data.vote_average > 5.5):
+            rating.classList.add("orange");
+            break;
+        default:
+            rating.classList.add("red");
+            break;
     }
+    infoheader.appendChild(paragraph);
+    infoheader.appendChild(rating);
+
+    random = ( Math.floor(Math.random() * (data.images.backdrops.length)));
+
+    let img = document.createElement("img");
+    img.id = "infopic";
+    img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`
+    details.appendChild(img)
+
+
 }
 
 function removeFavorite(target) {
@@ -189,14 +239,12 @@ function addFavorite(target) {
 }
 
 function filterMovies(e) {
-
     const movies = document.querySelectorAll(".card");
     console.log(movies);
     movies.forEach(movie => {
         switch (e.target.value) {
             case "all":
-                if (!movie.classList.contains("description")) {
-                movie.style.display = "block"; }
+                movie.style.display = "block";
                 break;
             case "favorites":
                 if (movie.classList.contains("fave") || (movie.id === "description")) {
