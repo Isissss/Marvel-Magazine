@@ -12,12 +12,11 @@ window.addEventListener('load', init);
 let grid
 let details
 let favorites
-let body
 let movieInfo
 let button
 let movieCard
 let random
-let moviename
+let mybutton
 let apikey = "c196ca2fae8666873c3683d32b8d6cf4"
 let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
 /**
@@ -34,14 +33,12 @@ function init() {
 
     details = document.querySelector('.movie-info');
 
-    body = document.querySelector("body");
-
     grid = document.querySelector('.grid');
     // // grid.addEventListener("click", gridClickHandler)
 
     mybutton = document.getElementById("myBtn");
 
-// When the user scrolls down 20px from the top of the document, show the button
+
     window.addEventListener("scroll", e => {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         mybutton.style.display = "block";
@@ -67,11 +64,10 @@ function init() {
 
     let selector = document.querySelector(".filter-movies")
     selector.addEventListener("click", filterMovies)
-}
 
-function topFunction() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    mybutton.addEventListener("click", e => {
+        document.body.scrollTop = 0;
+    })
 }
 
 function checkLightMode() {
@@ -152,10 +148,10 @@ const lightModeToggle = () => {
 
     if (lightMode === "true") {
         localStorage.setItem('lightMode', "false");
-        body.classList.remove("light-mode");
+        document.body.classList.remove("light-mode");
     } else {
         localStorage.setItem('lightMode', "true");
-        body.classList.add("light-mode");
+        document.body.classList.add("light-mode");
     }
 }
 

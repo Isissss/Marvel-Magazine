@@ -87,18 +87,18 @@ function getMovieDetails($id)
             "mdbID" => 76338
         ],
         5 => [
-            "desc" => "'Guardians of the Galaxy Vol. 2' zet de avonturen van het team voort terwijl ze reizen door de buitenste regionen van de kosmos. De Guardians moeten vechten om hun familie bij elkaar te houden, terwijl ze de mysteries over Peter Quills vader ontrafelen.",
-            "tags" => ['fish'],
+            "desc" => "Guardians of the Galaxy Vol. 2' zet de avonturen van het team voort terwijl ze reizen door de buitenste regionen van de kosmos. De Guardians moeten vechten om hun familie bij elkaar te houden, terwijl ze de mysteries over Peter Quills vader ontrafelen.",
+            "tags" => ['Based on comic', 'Misfit', 'Space', 'Superhero', 'Sequel'],
             "mdbID" => 283995
         ],
         6 => [
-            "desc" => "Specialty when on holiday in Spain",
-            "tags" => ['fish'],
+            "desc" => "T'Challa keert terug naar Wakanda om zijn plaats als koning in te nemen. Echter wanneer er een oude vijand op de radar verschijnt wordt T'Challa op de proef gesteld. Hij wordt meegesleurd in een conflict dat de hele wereld in gevaar brengt.",
+            "tags" => ['Africa', 'Superhero', 'Based on comic', 'Marvel', 'United'],
             "mdbID" => 284054
         ],
         7 => [
-            "desc" => "Specialty when on holiday in Spain",
-            "tags" => ['fish'],
+            "desc" => "Tien jaar nadat de eerste film van het Marvel Cinematic Universe werd uitgebracht, komt de spanning tot een hoogtepunt in de grootste en meest gevreesde confrontatie aller tijden in Marvel’s Avengers: Infinity War.",
+            "tags" => ['Magic', 'Sacrifice', 'Superhero', 'Battlefield', 'Cosmic', 'Magical object'],
             "mdbID" => 299536
         ],
         8 => [
