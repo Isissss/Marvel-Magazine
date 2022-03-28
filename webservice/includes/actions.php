@@ -69,52 +69,62 @@ function getMovieDetails($id)
         1 => [
             "desc" => "After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
             "tags" => ['Superhero', 'Female power', 'Alien Technology', "Hero's journey"],
-            "mdbID" => 299534
+            "mdbID" => 299534,
+            "year" => 2013
         ],
         2 => [
             "desc" => "Het jaar 1990. Er is een galactische oorlog gaande tussen twee buitenaardse rassen. Carol Danvers, beter bekend als Captain Marvel, is een vrouw met superkrachten die na lange tijd terugkeert naar de aarde.",
             "tags" => ['Superhero', 'Female power', 'Alien Technology', "Hero's journey"],
-            "mdbID" => 299537
+            "mdbID" => 299537,
+            "year" => 2019
         ],
         3 => [
             "desc" => "Vanaf haar geboorte is Natasha Romanoff toevertrouwd aan de KGB, die haar heeft opgeleid tot het ultieme wapen en hun beste agente. Wanneer de Sovjet-Unie uiteenvalt, staat ze ten dode opgeschreven en werd ze gedwongen naar New York te verhuizen. Daar leeft ze inmiddels als freelancer en is het jaren geleden dat de Sovjet-Unie ten val kwam.",
             "tags" => ['Spy', 'Female Spy', 'Assassin', 'Hero', 'Based on comic'],
-            "mdbID" => 497698
+            "mdbID" => 497698,
+            "year" => 2021
         ],
         4 => [
             "desc" => "Na de gebeurtenissen in The Avengers strijdt Thor om de orde te herstellen in de kosmos. Maar een oud ras van Duistere Elven onder leiding van de wraaklustige Malekith wil het universum in duisternis onderdompelen. Wanneer zelfs Odin en Asgard niet opgewassen zijn tegen deze vijand, zal Thor zijn meest gevaarlijke en persoonlijke strijd moeten aangaan.",
             "tags" => ['Superhero', 'Hostile takeover', 'Norse', 'Mythology'],
-            "mdbID" => 76338
+            "mdbID" => 76338,
+            "year" => 2013
         ],
         5 => [
             "desc" => "Guardians of the Galaxy Vol. 2' zet de avonturen van het team voort terwijl ze reizen door de buitenste regionen van de kosmos. De Guardians moeten vechten om hun familie bij elkaar te houden, terwijl ze de mysteries over Peter Quills vader ontrafelen.",
             "tags" => ['Based on comic', 'Misfit', 'Space', 'Superhero', 'Sequel'],
-            "mdbID" => 283995
+            "mdbID" => 283995,
+            "year" => 2017
         ],
         6 => [
             "desc" => "T'Challa keert terug naar Wakanda om zijn plaats als koning in te nemen. Echter wanneer er een oude vijand op de radar verschijnt wordt T'Challa op de proef gesteld. Hij wordt meegesleurd in een conflict dat de hele wereld in gevaar brengt.",
             "tags" => ['Africa', 'Superhero', 'Based on comic', 'Marvel', 'United'],
-            "mdbID" => 284054
+            "mdbID" => 284054,
+            "year" => 2018
         ],
         7 => [
             "desc" => "Tien jaar nadat de eerste film van het Marvel Cinematic Universe werd uitgebracht, komt de spanning tot een hoogtepunt in de grootste en meest gevreesde confrontatie aller tijden in Marvel’s Avengers: Infinity War.",
             "tags" => ['Magic', 'Sacrifice', 'Superhero', 'Battlefield', 'Cosmic', 'Magical object'],
-            "mdbID" => 299536
+            "mdbID" => 299536,
+            "year" => 2018
         ],
         8 => [
             "desc" => 'Peter Parker is ontmaskerd en kan zijn normale leven niet langer scheiden van de hoge inzet van een superheld zijn. Wanneer hij om hulp vraagt van Doctor Strange, wordt de inzet nog gevaarlijker, waardoor hij moet ontdekken wat het werkelijk betekent om Spider-Man te zijn.',
             "tags" => ['Villain', 'Comic Book', 'New York City', 'Hero'],
-            "mdbID" => 634649
+            "mdbID" => 634649,
+            "year" => 2021
         ],
         9 => [
             "desc" => 'Peter Parker keert na zijn eerste superheldengevecht als Spider-Man terug naar zijn normale leven in Queens. Hij hoopt snel bij The Avengers gevraagd te worden door Tony Stark, maar het telefoontje blijft uit.',
             "tags" => ['New York City', 'NYC', 'High School', 'Comic Book', 'Based on Comic', 'Hero'],
-            "mdbID" => 315635
+            "mdbID" => 315635,
+            "year" => 2017
         ],
         10 => [
-            "desc" => ' Wanneer zijn carrière als chirurg voorbij is, gaat Stephen Strange op onderzoek uit naar het mystieke. Tijdens zijn zoektocht ontmoet hij een tovenaar, the Ancient One, die hem niet alleen beter maakt, maar hem ook magische krachten geeft en leert te beheersen. Al snel moet hij deze magie gebruiken om de aarde te beschermen tegen kwaad uit andere dimensies.',
+            "desc" => 'Wanneer zijn carrière als chirurg voorbij is, gaat Stephen Strange op onderzoek uit naar het mystieke. Tijdens zijn zoektocht ontmoet hij een tovenaar, the Ancient One, die hem niet alleen beter maakt, maar hem ook magische krachten geeft en leert te beheersen. Al snel moet hij deze magie gebruiken om de aarde te beschermen tegen kwaad uit andere dimensies.',
             "tags" => ['Wizard', 'Magic', 'Hero', 'Sorcerer'],
-            "mdbID" => 284052
+            "mdbID" => 284052,
+            "year" => 2016
         ],
     ];
 

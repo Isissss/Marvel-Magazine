@@ -16,6 +16,7 @@ let movieInfo
 let button
 let movieCard
 let random
+let infoheader
 let mybutton
 let apikey = "c196ca2fae8666873c3683d32b8d6cf4"
 let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
@@ -47,20 +48,8 @@ function init() {
     }
     })
 
-    grid.addEventListener("click", e => {
-        let target = e.target;
+    grid.addEventListener("click", gridClickhandler)
 
-        if (target.nodeName === "BUTTON") {
-            if (target.classList.contains("active")) {
-                removeFavorite(target);
-            } else {
-                addFavorite(target)
-            }
-        } else if (target.nodeName === "IMG" && (target.id !== 'infopic')) {
-            getMovieData(`${apiUrl}?id=${target.dataset.id}&append_to_response=images`, ShowDetails);
-            movieName = target.parentNode.querySelector(".movie-name > h3");
-        }
-    })
 
     let selector = document.querySelector(".filter-movies")
     selector.addEventListener("click", filterMovies)
@@ -87,9 +76,22 @@ function getMovieData(url, succesHandler) {
         .then(succesHandler)
         .catch(ajaxErrorHandler);
 }
+function gridClickhandler (e) {
+    let target = e.target;
+
+    if (target.nodeName === "BUTTON") {
+        if (target.classList.contains("active")) {
+            removeFavorite(target);
+        } else {
+            addFavorite(target)
+        }
+    } else if (target.nodeName === "IMG" && (target.id !== 'infopic')) {
+        getMovieData(`${apiUrl}?id=${target.dataset.id}&append_to_response=images`, ShowDetails);
+        movieName = target.parentNode.querySelector(".movie-name > h3");
+    }
+}
 
 function createMovieCards(data) {
-
     for (let movie of data) {
         movieCard = document.createElement('div');
         movieCard.classList.add('card');
@@ -174,22 +176,20 @@ function ShowDetails(data) {
     tags.innerHTML = data.tags.join(", ")
     details.appendChild(tags)
 
-    getMovieData(`https://api.themoviedb.org/3/movie/${data.mdbID}?api_key=${apikey}&append_to_response=images&include_image_language=en,null`, getRating)
-
-}
-
-function getRating (data) {
-    let year = new Date(data.release_date);
-    year = year.getFullYear();
-
-    let infoheader = document.querySelector('#movie-name');
+    infoheader = document.querySelector('#movie-name');
     infoheader.innerHTML = " "
 
     let paragraph = document.createElement("h3");
-    paragraph.innerHTML = `${movieName.innerHTML} (${year}) `
+    paragraph.innerHTML = `${movieName.innerHTML} (${data.year}) `
 
+    infoheader.appendChild(paragraph);
+
+    getMovieData(`https://api.themoviedb.org/3/movie/${data.mdbID}?api_key=${apikey}&append_to_response=images&include_image_language=en,null`, getRating)
+}
+
+function getRating (data) {
     let rating = document.createElement('span');
-    rating.innerHTML = data.vote_average;
+    rating.innerHTML = `&#9733 ${data.vote_average}`;
 
     switch (true) {
         case (data.vote_average > 7.4):
@@ -202,7 +202,6 @@ function getRating (data) {
             rating.classList.add("red");
             break;
     }
-    infoheader.appendChild(paragraph);
     infoheader.appendChild(rating);
 
     random = ( Math.floor(Math.random() * (data.images.backdrops.length)));
@@ -211,8 +210,6 @@ function getRating (data) {
     img.id = "infopic";
     img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`
     details.appendChild(img)
-
-
 }
 
 function removeFavorite(target) {
