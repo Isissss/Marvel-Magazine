@@ -12,14 +12,11 @@ window.addEventListener('load', init);
 let grid
 let details
 let favorites
-let movieInfo
 let button
-let movieCard
-let random
 let infoheader
-let mybutton
 let apikey = "c196ca2fae8666873c3683d32b8d6cf4"
 let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
+
 /**
  * Execute after document is fully loaded
  */
@@ -35,10 +32,9 @@ function init() {
     details = document.querySelector('.movie-info');
 
     grid = document.querySelector('.grid');
-    // // grid.addEventListener("click", gridClickHandler)
+    grid.addEventListener("click", gridClickhandler)
 
-    mybutton = document.getElementById("myBtn");
-
+    infoheader = document.querySelector('#movie-name');
 
     window.addEventListener("scroll", e => {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -48,15 +44,11 @@ function init() {
     }
     })
 
-    grid.addEventListener("click", gridClickhandler)
-
-
     let selector = document.querySelector(".filter-movies")
     selector.addEventListener("click", filterMovies)
 
-    mybutton.addEventListener("click", e => {
-        document.body.scrollTop = 0;
-    })
+    let mybutton = document.getElementById("myBtn");
+    mybutton.addEventListener("click", goTop)
 }
 
 function checkLightMode() {
@@ -65,6 +57,10 @@ function checkLightMode() {
     }
 }
 
+function  goTop (e) {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+}
 function getMovieData(url, succesHandler) {
     fetch(url)
         .then((response) => {
@@ -76,6 +72,7 @@ function getMovieData(url, succesHandler) {
         .then(succesHandler)
         .catch(ajaxErrorHandler);
 }
+
 function gridClickhandler (e) {
     let target = e.target;
 
@@ -85,7 +82,7 @@ function gridClickhandler (e) {
         } else {
             addFavorite(target)
         }
-    } else if (target.nodeName === "IMG" && (target.id !== 'infopic')) {
+    } else if (target.nodeName === "IMG" && target.id !== 'infopic') {
         getMovieData(`${apiUrl}?id=${target.dataset.id}&append_to_response=images`, ShowDetails);
         movieName = target.parentNode.querySelector(".movie-name > h3");
     }
@@ -93,10 +90,10 @@ function gridClickhandler (e) {
 
 function createMovieCards(data) {
     for (let movie of data) {
-        movieCard = document.createElement('div');
+        let movieCard = document.createElement('div');
         movieCard.classList.add('card');
 
-        movieInfo = document.createElement('div');
+        let movieInfo = document.createElement('div');
         movieInfo.classList.add('movie-name');
 
         let title = document.createElement('h3');
@@ -111,7 +108,11 @@ function createMovieCards(data) {
         favorite.classList.add("fas", "fa-heart");
         button.appendChild(favorite);
 
-        checkIfFavorite(button.dataset.id);
+        if (checkIfFavorite(button.dataset.id)) {
+            movieCard.classList.add("fave");
+            button.classList.add("active");
+            movieInfo.classList.add("active");
+        }
 
         movieInfo.appendChild(button);
         movieCard.appendChild(movieInfo);
@@ -121,31 +122,14 @@ function createMovieCards(data) {
         image.dataset.id = movie.id;
 
         movieCard.appendChild(image);
-
         grid.appendChild(movieCard);
     }
 }
 
-function checkIfFavorite(id) {
-    let index = favorites.indexOf(id);
+let checkIfFavorite = id => { if (favorites.indexOf(id) === -1) { return 'true' }}
 
-    if (index === -1) {
-        return;
-    }
-    movieCard.classList.add("fave");
-    button.classList.add("active");
-    movieInfo.classList.add("active");
-}
 
-function ajaxErrorHandler(data) {
-    console.log(data);
-    let error = document.createElement('div');
-    error.classList.add('error');
-    error.innerHTML = "Error :(";
-    grid.before(error);
-}
-
-const lightModeToggle = () => {
+const lightModeToggle = (e) => {
     let lightMode = localStorage.getItem('lightMode');
 
     if (lightMode === "true") {
@@ -159,6 +143,7 @@ const lightModeToggle = () => {
 
 function ShowDetails(data) {
     details.innerHTML = "";
+    infoheader.innerHTML = "";
 
     let title = document.createElement('h4')
     title.innerHTML = "Description"
@@ -176,18 +161,22 @@ function ShowDetails(data) {
     tags.innerHTML = data.tags.join(", ")
     details.appendChild(tags)
 
-    infoheader = document.querySelector('#movie-name');
-    infoheader.innerHTML = " "
-
-    let paragraph = document.createElement("h3");
-    paragraph.innerHTML = `${movieName.innerHTML} (${data.year}) `
-
-    infoheader.appendChild(paragraph);
+    let h3 = document.createElement("h3");
+    h3.innerHTML = `${movieName.innerHTML} (${data.year}) `
 
     getMovieData(`https://api.themoviedb.org/3/movie/${data.mdbID}?api_key=${apikey}&append_to_response=images&include_image_language=en,null`, getRating)
+
+    infoheader.appendChild(h3);
 }
 
 function getRating (data) {
+    let random = ( Math.floor(Math.random() * (data.images.backdrops.length)));
+
+    let img = document.createElement("img");
+    img.id = "infopic";
+    img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`
+
+
     let rating = document.createElement('span');
     rating.innerHTML = `&#9733 ${data.vote_average}`;
 
@@ -202,14 +191,10 @@ function getRating (data) {
             rating.classList.add("red");
             break;
     }
+
+    details.appendChild(img)
     infoheader.appendChild(rating);
 
-    random = ( Math.floor(Math.random() * (data.images.backdrops.length)));
-
-    let img = document.createElement("img");
-    img.id = "infopic";
-    img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`
-    details.appendChild(img)
 }
 
 function removeFavorite(target) {
@@ -250,4 +235,10 @@ function filterMovies(e) {
 }
 
 
-
+function ajaxErrorHandler(data) {
+    console.log(data);
+    let error = document.createElement('div');
+    error.classList.add('error');
+    error.innerHTML = "Error :(";
+    grid.before(error);
+}
