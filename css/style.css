@@ -14,7 +14,7 @@ body {
     /*box-shadow: 0 5px 6px black;*/
     padding: 3vh 17.5% 5vh;
 }
-#myBtn {
+#topBtn {
     display: none; /* Hidden by default */
     position: fixed; /* Fixed/sticky position */
     bottom: 20px; /* Place the button at the bottom of the page */
@@ -30,7 +30,7 @@ body {
     font-size: 18px; /* Increase font size */
 }
 
-#myBtn:hover {
+#topBtn:hover {
     background: #5d76cb;
 }
 .card {
@@ -43,8 +43,7 @@ body {
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
-    padding-left: 2%;
-    padding-top: 2%;
+    padding: 2%;
     font-family: 'Roboto Condensed', sans-serif;
 }
 
@@ -57,7 +56,7 @@ body {
 
 }
 #infopic {
-    width: 70%;
+    width: 50%;
 }
 
 .fav-btn {
@@ -105,7 +104,7 @@ span {
 img {
     overflow: hidden;
     width: 100%;
-    height: 92.5%;
+    height: 86.5%;
     object-fit: cover;
     display: block;
 }
@@ -124,6 +123,7 @@ img {
     display: flex;
     justify-content: space-between;
     height: 9.5%;
+    font-size: 0.8em;
     align-items: center;
     background: #3951b0;
 }
@@ -141,7 +141,7 @@ img {
 header {
     width: 100%;
     color: white;
-    background: rgba(93, 118, 203, 0.37);
+    background: rgb(93, 118, 203);
     height: 7.5vh;
     display: flex;
     align-items: center;
@@ -155,7 +155,17 @@ h3 {
     padding: 0;
     margin:0;
 }
+.card .details {
+    width: 100%;
+    height: 6%;
+    background: #3951b0;
+    border: none;
+    color: white;
+}
 
+.details:hover {
+    background: #5d76cb;
+}
 .card .info {
     width: 100%;
     height: 7.5%;
@@ -185,4 +195,64 @@ h3 {
     background: #5d76cb;
 
 
+}
+
+.modal {
+    position: fixed;
+    width: 50vw;
+    height: 50vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    top: 25%;
+    left: 25%;
+    color:black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+}
+
+.modal-bg {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100vw;
+    height: 100vh;
+}
+
+.modal-container {
+    border-radius: 10px;
+    background-size: cover;
+    background: #fff;
+    position: relative;
+    padding: 30px;
+}
+
+
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    outline: none;
+    appearance: none;
+    color: #22254b;
+    background: none;
+    border: 0;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.modal-content h1 {
+    margin: 0;
+}
+
+.modal-content img {
+    width: 250px;
 }

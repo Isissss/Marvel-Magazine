@@ -20,7 +20,7 @@
 <body>
 <button
         id="switch"> Dark Mode Toggle
-</button><button id="myBtn" >Top</button>
+</button><button id="topBtn" >Top</button>
 <select name="movies" class="filter-movies">
     <option value="all">All</option>
     <option value="favorites">Favorites</option>
@@ -28,12 +28,16 @@
 </select>
 
 <div class="grid">
-
-    <div class="card" id="description">
-        <div class="movie-name" id="movie-name"><h3>Details</h3></div>
-<div class="movie-info"> </div>
-    </div>
-
+    <section class="modal" id="movie-detail">
+        <div class="modal-bg"></div>
+        <div class="modal-container">
+            <div class="modal-header"></div>
+            <div class="modal-content">
+            </div>
+            <button class="modal-close" id="modal-close">X</button>
+        </div>
+    </section>
 </div>
+
 </body>
 </html>
