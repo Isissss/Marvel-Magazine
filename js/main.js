@@ -3,45 +3,42 @@ window.addEventListener('load', init);
 //Global vars
 let grid
 let details
-let favorites
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let button
-let movieName
 let movies = {}
 let detailModal;
-let modalHeader;
+let randomQuote;
 let detailModalContent;
+let movieinfo;
 let detailModalCloseButton;
 let overlay;
+let topbtn;
 let apiKey = "c196ca2fae8666873c3683d32b8d6cf4"
-let apiUrl = 'http://localhost:63342/Magazinee/webservice/index.php';
+let apiUrl = 'http://localhost/Magazine/Magazinee/webservice/index.php';
 
 /**
  * Execute after document is fully loaded
  */
 function init() {
+
+    //Light mode
     checkLightMode();
-    getMovieData(apiUrl, createMovieCards);
+    document.getElementById('lightmode').addEventListener('click', lightModeToggle);
 
-    favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    //Set quote interval for 15seconds and execute it once on load
+    randomQuote = document.getElementById("quote")
+    setInterval(getQuote, 15000)
+    getQuote();
 
-    document.getElementById('switch').addEventListener('click', lightModeToggle);
+    //Create the cards
+    AjaxCall(apiUrl, createMovieCards);
 
     grid = document.querySelector('.grid');
     grid.addEventListener("click", gridClickhandler)
 
-    let topbtn = document.getElementById("topBtn")
-    topbtn.addEventListener("click", goTop);
-
-    window.addEventListener("scroll", e => {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            topbtn.style.display = "block";
-        } else {
-            topbtn.style.display = "none";
-        }
-    })
-
     document.querySelector(".filter-movies").addEventListener("click", filterMovies)
 
+    //Modal content
     detailModal = document.getElementById('movie-detail');
     detailModalContent = detailModal.querySelector('.modal-content');
 
@@ -52,18 +49,7 @@ function init() {
     overlay.addEventListener("click", closeModal)
 }
 
-function checkLightMode() {
-    if (localStorage.getItem('lightMode') === "true") {
-        document.querySelector("body").classList.add("light-mode");
-    }
-}
-
-function goTop(e) {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
-}
-
-function getMovieData(url, succesHandler) {
+function AjaxCall(url, succesHandler) {
     fetch(url)
         .then((response) => {
             if (!response.ok) {
@@ -75,161 +61,192 @@ function getMovieData(url, succesHandler) {
         .catch(ajaxErrorHandler);
 }
 
+
 function gridClickhandler(e) {
     let target = e.target;
+
     if (target.nodeName !== "BUTTON") {
         return;
     }
-
     if (target.classList.contains("fav-btn")) {
-        let favorite = (target.classList.contains("active")) ? removeFavorite(target) : addFavorite(target);
+        (target.parentElement.parentElement.classList.contains("fave")) ? removeFavorite(target) : addFavorite(target);
     } else if (target.classList.contains("details")) {
-        getMovieData(`${apiUrl}?id=${target.dataset.id}&append_to_response=images`, ShowDetails);
-        movieName = movies[target.dataset.id]['name'];
+        movieinfo = movies[target.dataset.id];
+        AjaxCall(`${apiUrl}?id=${target.dataset.id}`, ShowDetails);
     }
 }
 
+let getQuote = () => {
+    AjaxCall('https://randommarvelquoteapi.herokuapp.com/', showQuote)
+}
+
+let showQuote = data => {
+    if (data === undefined) {
+        return;
+    }
+    randomQuote.innerHTML = " ";
+
+    let span = document.createElement("span");
+    span.innerHTML = `"${data.quote}"`;
+
+    randomQuote.appendChild(span);
+}
+
 function createMovieCards(data) {
-    for (let movie of data) {
+    data.forEach(movie => {
         let movieCard = document.createElement('div');
         movieCard.classList.add('card');
+        movieCard.dataset.id = movie.movieid;
 
-        let movieInfo = document.createElement('div');
-        movieInfo.classList.add('movie-name');
+        if ((favorites.indexOf(movie.movieid) !== -1)) {
+            movieCard.classList.toggle("fave");
+        }
+
+        // Create header of card
+        let movieHeader = document.createElement('div');
+        movieHeader.classList.add('movie-name');
 
         let title = document.createElement('h3');
-        title.innerHTML = movie.name;
-        movieInfo.appendChild(title);
+        title.innerHTML = ` ${movie.name}`;
+        movieHeader.appendChild(title);
 
         button = document.createElement('button');
-        button.classList.add('fav-btn')
-        button.dataset.id = movie.id;
+        button.classList.add('fav-btn');
+        button.dataset.id = movie.movieid;
 
         let favorite = document.createElement("i")
         favorite.classList.add("fas", "fa-heart");
         button.appendChild(favorite);
 
-        if (checkIfFavorite(button.dataset.id)) {
-            movieCard.classList.add("fave");
-            button.classList.add("active");
-            movieInfo.classList.add("active");
-        }
+        movieHeader.appendChild(button);
+        movieCard.appendChild(movieHeader);
 
-        movieInfo.appendChild(button);
-        movieCard.appendChild(movieInfo);
-
+        // Movie cover
         let image = document.createElement('img');
         image.src = movie.cover;
 
         movieCard.appendChild(image);
 
-        let info = document.createElement("button")
-        info.innerHTML = "View details"
+        //Create details button
+        let infodiv = document.createElement("div");
+        infodiv.classList.add('detailOverlay');
+
+        let info = document.createElement("button");
+        info.innerHTML = "View details";
         info.classList.add("details");
-        info.dataset.id = movie.id;
+        info.dataset.id = movie.movieid;
 
-        movieCard.appendChild(info);
+        infodiv.appendChild(info);
+        movieCard.appendChild(infodiv);
 
+        movies[movie.movieid] = movie;
         grid.appendChild(movieCard);
 
-        movies[movie.id] = movie
-    }
+        // Add movie info to object to use later
+        movies[movie.movieid] = movie
+    })
+
 }
 
-let checkIfFavorite = id => {
-    if (favorites.indexOf(id) !== -1) {
-        return 'true'
+let checkLightMode = () => {
+    if (localStorage.getItem('lightMode') === "true") {
+        document.querySelector("body").classList.add("light-mode");
     }
 }
-
 
 let lightModeToggle = e => {
-    let lightMode = localStorage.getItem('lightMode');
-
-    if (lightMode === "true") {
-        localStorage.setItem('lightMode', "false");
-        document.body.classList.remove("light-mode");
-    } else {
-        localStorage.setItem('lightMode', "true");
-        document.body.classList.add("light-mode");
-    }
+    document.body.classList.toggle("light-mode");
+    localStorage.getItem('lightMode') === "true"
+        ? localStorage.setItem('lightMode', "false")
+        : localStorage.setItem('lightMode', "true");
 }
 
 function ShowDetails(data) {
     detailModalContent.innerHTML = "";
 
-    let h3 = document.createElement("h1");
-    h3.innerHTML = `${movieName} (${data.year}) `
-    detailModalContent.appendChild(h3);
+    let h1 = document.createElement("h1");
+    h1.innerHTML = `${movieinfo['name']} (${movieinfo['years']})`;
+    h1.id = 'detailheader';
+    detailModalContent.appendChild(h1);
 
+    let title = document.createElement("h4");
+    title.innerHTML = "Description";
+    detailModalContent.appendChild(title);
 
-    let title = document.createElement('h4')
-    title.innerHTML = "Description"
-    detailModalContent.appendChild(title)
+    let desc = document.createElement("p");
+    desc.innerHTML = `${movieinfo['description']}`;
+    detailModalContent.appendChild(desc);
 
-    let desc = document.createElement("p")
-    desc.innerHTML = `${data.desc}`
-    detailModalContent.appendChild(desc)
+    title = document.createElement("h4");
+    title.innerHTML = "Tags";
+    detailModalContent.appendChild(title);
 
-    let title2 = document.createElement('h4')
-    title2.innerHTML = "Tags"
-    detailModalContent.appendChild(title2)
+    let tags = document.createElement("p");
+    let movietags = [];
+    data.forEach(data => {
+        movietags.push(data.tagname);
+    })
 
-    let tags = document.createElement("p")
-    tags.innerHTML = data.tags.join(", ")
-    detailModalContent.appendChild(tags)
+    tags.innerHTML = movietags.join(', ');
 
-    getMovieData(`https://api.themoviedb.org/3/movie/${data.mdbID}?api_key=${apiKey}&append_to_response=images&include_image_language=en,null`, getRating)
+    detailModalContent.appendChild(tags);
+
+    // Get rating via moviedb
+    AjaxCall(`https://api.themoviedb.org/3/movie/${movieinfo['mdbID']}?api_key=${apiKey}&append_to_response=images&include_image_language=en,null`, getMoviedbInfo)
+
 }
 
-function getRating(data) {
+function getMoviedbInfo(data) {
+    //Random num based on the amount of images available
     let random = (Math.floor(Math.random() * (data.images.backdrops.length)));
 
     let img = document.createElement("img");
     img.id = "infopic";
-    img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`
+    img.src = `https://www.themoviedb.org/t/p/original/${data.images.backdrops[random].file_path}`;
     detailModalContent.appendChild(img);
 
     let rating = document.createElement('span');
     rating.innerHTML = `&#9733 ${data.vote_average}`;
 
+    let detailheader = document.getElementById('detailheader')
+    detailheader.after(rating);
+
+    //Rating color
     switch (true) {
         case (data.vote_average > 7.4):
-            rating.classList.add("green");
+            rating.classList.add("great");
             break;
         case (data.vote_average > 5.5):
-            rating.classList.add("orange");
+            rating.classList.add("mid");
             break;
         default:
-            rating.classList.add("red");
+            rating.classList.add("bad");
             break;
     }
-    detailModalContent.appendChild(rating);
 
     detailModal.classList.add('open');
 }
 
-function removeFavorite(target) {
-    target.classList.remove("active");
-    target.parentNode.classList.remove("active");
-    target.parentNode.parentElement.classList.remove("fave");
+let removeFavorite = (target) => {
+    let card = document.querySelector(`.card[data-id='${target.dataset.id}']`)
+    card.classList.remove("fave");
 
     let index = favorites.indexOf(target.dataset.id);
     favorites.splice(index, 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
 }
 
-function addFavorite(target) {
-    target.classList.add("active");
-    target.parentNode.classList.add("active");
-    target.parentNode.parentElement.classList.add("fave");
+let addFavorite = (target) => {
+    let card = document.querySelector(`.card[data-id='${target.dataset.id}']`)
+    card.classList.add("fave");
 
     favorites.push(target.dataset.id);
     localStorage.setItem('favorites', JSON.stringify(favorites));
 }
 
-function filterMovies(e) {
-    const movies = document.querySelectorAll(".card");
+let filterMovies = (e) => {
+    let movies = document.querySelectorAll(".card");
+    //console.log(movies);
 
     movies.forEach(movie => {
         switch (e.target.value) {
@@ -237,7 +254,7 @@ function filterMovies(e) {
                 movie.style.display = "block";
                 break;
             case "favorites":
-                if (movie.classList.contains("fave") || (movie.id === "description")) {
+                if (movie.classList.contains("fave")) {
                     movie.style.display = "block";
                 } else {
                     movie.style.display = "none";
@@ -250,10 +267,7 @@ let closeModal = (e) => {
     detailModal.classList.remove('open')
 }
 
-
 function ajaxErrorHandler(data) {
-    grid.before.innerHTML = "";
-
     console.log(data);
     let error = document.createElement('div');
     error.classList.add('error');
