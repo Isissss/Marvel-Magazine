@@ -6,14 +6,40 @@ body {
 
 }
 
+.miscBtns button {
+    height: 30px;
+    background: #3951b0;
+    color: white;
+    border: 1px solid #1e2b69;
+    border-radius: 4px;
+}
+
+.miscBtns {
+    margin: 15px 10%;
+
+}
+
+.miscBtns select {
+    height: 30px;
+    background: #3951b0;
+    border: 1px solid #1e2b69;
+    color: white;
+    border-radius: 4px;
+}
+
+.miscBtns select:hover, .miscBtns button:hover {
+    background: #2f4391;
+}
+
 .grid {
     display: grid;
     gap: 1%;
-    grid-template-columns: repeat(4, 24%);
-    /*background: rgba(191, 182, 182, 0.15);*/
+    grid-template-columns: repeat(5, 19%);
+    background-color: #22254b;
     /*box-shadow: 0 5px 6px black;*/
-    padding: 3vh 17.5% 5vh;
+    padding: 0 10% 5vh;
 }
+
 #topBtn {
     display: none; /* Hidden by default */
     position: fixed; /* Fixed/sticky position */
@@ -33,10 +59,13 @@ body {
 #topBtn:hover {
     background: #5d76cb;
 }
+
 .card {
     background-color: black;
     box-shadow: 0 5px 6px black;
     margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
 }
 
 .movie-info {
@@ -55,8 +84,9 @@ body {
     box-shadow: none;
 
 }
+
 #infopic {
-    width: 50%;
+    width: 75%;
 }
 
 .fav-btn {
@@ -71,61 +101,91 @@ body {
     pointer-events: none;
 }
 
-.fav-btn.active, .fav-btn:hover {
-    color: #e05454;
-    font-size: 1.2rem;
-}
 
 h4 {
     margin: 0;
+    padding-top: 10px;
 }
 
 .cover {
     padding: 0;
     margin: 0;
 }
+
 span {
-    font-weight: bold;
     font-size: 1.2em;
 }
 
-.green {
+.great {
     color: #10de10;
 }
 
-.red {
-    color:Red;
+.bad {
+    color: Red;
 }
 
-.orange {
-    color:orange;
+.mid {
+    color: orange;
+}
+
+header #quote {
+    width: 100%;
+    font-size: 0.8rem;
+    font-style: italic;
+    overflow: hidden;
 }
 
 img {
     overflow: hidden;
     width: 100%;
-    height: 86.5%;
     object-fit: cover;
+    height: 90.5%;
     display: block;
 }
 
- p {
-     padding: 0;
-     margin: 0.25rem 0 1rem;
- }
+p {
+    padding: 0;
+    margin: 0.25rem 0 1rem;
+}
 
 .card .fav-btn {
-    font-size: 1.3em;
+    font-size: 1.2rem;
+
 }
 
 .movie-name {
     padding: 0 10px;
     display: flex;
+    min-height: 40px;
     justify-content: space-between;
     height: 9.5%;
-    font-size: 0.8em;
+    font-size: 0.85em;
     align-items: center;
     background: #3951b0;
+}
+
+.detailOverlay {
+    position: absolute;
+    transition: transform 0.3s ease-in;
+    left: 0;
+    right: 0;
+    transform: translateY(102%);
+    bottom: 0;
+    top: 90%
+
+
+}
+
+.detailOverlay button {
+    height: 100%;
+
+
+}
+
+.card:hover .detailOverlay {
+    display: unset;
+    transform: translateY(10%);
+
 }
 
 .movie-info img {
@@ -134,38 +194,55 @@ img {
     display: block;
 }
 
-.movie-name.active {
-    background: #5d76cb;
+.card.fave .movie-name {
+    background: #304ad5;
 }
 
+.card.fave .fav-btn {
+    color: #ff0000;
+    font-size: 1.2rem;
+}
+
+header h1 {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin: 0;
+}
+
+
 header {
-    width: 100%;
+    overflow: hidden;
     color: white;
-    background: rgb(93, 118, 203);
-    height: 7.5vh;
+    background: rgb(57, 81, 176);
+    min-height: 10vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     text-align: center;
     font-size: 1.0em;
+
 }
 
 
 h3 {
     padding: 0;
-    margin:0;
+    margin: 0;
 }
+
 .card .details {
     width: 100%;
-    height: 6%;
-    background: #3951b0;
+    background: rgba(255, 255, 255, 0.71);
+    font-weight: bold;
     border: none;
-    color: white;
+    color: black;
 }
 
 .details:hover {
-    background: #5d76cb;
+    background: rgba(255, 255, 255, 0.57);
+
 }
+
 .card .info {
     width: 100%;
     height: 7.5%;
@@ -173,7 +250,7 @@ h3 {
     background: #5d76cb;
 }
 
-.light-mode {
+.light-mode, .light-mode .grid {
     background: white;
 }
 
@@ -181,20 +258,9 @@ h3 {
     color: black;
 }
 
-.light-mode #description {
-    background: rgba(220, 220, 225, 0.89);
-}
-
-.light-mode .grid {
-    /*    background: rgba(93, 118, 203, 0.37);*/
-    /*    box-shadow: 0 5px 6px black;*/
-
-}
 
 .light-mode header {
     background: #5d76cb;
-
-
 }
 
 .modal {
@@ -203,11 +269,12 @@ h3 {
     height: 50vh;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
     top: 25%;
     left: 25%;
-    color:black;
+    color: black;
     display: flex;
+    z-index: 10;
     align-items: center;
     justify-content: center;
 }
@@ -227,21 +294,22 @@ h3 {
 
 .modal-container {
     border-radius: 10px;
+    min-height: 475px;
+    color:white;
     background-size: cover;
-    background: #fff;
+    background: linear-gradient(62deg, rgba(34,37,75,0.72) 3%, rgba(57,81,176,0.72) 37%, rgba(76,45,253,0.72) 100%);
     position: relative;
-    padding: 30px;
+    padding: 20px;
 }
-
 
 
 .modal-close {
     position: absolute;
     right: 20px;
-    top: 30px;
+    top: 20px;
     outline: none;
     appearance: none;
-    color: #22254b;
+    color: #cc2323;
     background: none;
     border: 0;
     font-weight: bold;
@@ -250,9 +318,85 @@ h3 {
 }
 
 .modal-content h1 {
+    padding: 0;
     margin: 0;
+}
+.modal-content span {
+    font-weight: bold;
+    font-size: 1.3em;
+    margin: 0 0 25px;
+
+}
+
+.modal-content {
+    width: 40vw;
 }
 
 .modal-content img {
-    width: 250px;
+    width: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+    .grid {
+        display: grid;
+        gap: 1%;
+        grid-template-columns: repeat(2, 49%);
+        background-color: #22254b;
+        padding: 2vh 0 5vh;
+    }
+    #infopic {
+        width: 100%;
+    }
+
+    .miscBtns select {
+        height: 30px;
+        background: #3951b0;
+        border: 1px solid #1e2b69;
+        color: white;
+        border-radius: 4px;
+    }
+
+    .miscBtns button {
+        height: 30px;
+        background: #3951b0;
+        color: white;
+        border: 1px solid #1e2b69;
+        border-radius: 4px;
+    }
+
+    .miscBtns {
+        position: unset;
+        margin: 15px 10px 0;
+    }
+    header h1 {
+        font-size: 1.5em;
+    }
+    span {
+         font-size: 1em;
+    }
+    .detailOverlay {
+        position: absolute;
+        bottom: 0;
+        transform: unset;
+        top: 90%;
+        width: 100%;
+    }
+
+    .detailOverlay button {
+        height: 100%;
+        transform: unset;
+    }
+
+
+
+    .card:hover .detailOverlay {
+        display: unset;
+        transform: unset;
+    }
+    h3 {
+        font-size: 1em;
+    }
+    .modal-content {
+        width: 80vw;
+    }
 }
