@@ -2,68 +2,43 @@
 /**
  * @return array
  */
-function getMovies()
-{
-    return [
-        [
-            "id" => 1,
-            "name" => "Avengers: End Game",
-            "cover" => "https://lumiere-a.akamaihd.net/v1/images/p_avengersendgame_19751_e14a0104.jpeg?region=0,0,540,810&width=480",
-        ],
-        [
-            "id" => 2,
-            "name" => "Captain Marvel",
-            "cover" => "https://terrigen-cdn-dev.marvel.com/content/prod/1x/captainmarvel_lob_crd_06.jpg",
-        ],
-        [
-            "id" => 3,
-            "name" => "Black Widow",
-            "cover" => "https://m.media-amazon.com/images/M/MV5BNjRmNDI5MjMtMmFhZi00YzcwLWI4ZGItMGI2MjI0N2Q3YmIwXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg",
-        ],
-        [
-            "id" => 4,
-            "name" => "Thor: The Dark World",
-            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/wp6OxE4poJ4G7c0U2ZIXasTSMR7.jpg",
-        ],
-        [
-            "id" => 5,
-            "name" => "Guardians of the Galaxy",
-            "cover" => "https://collider.com/wp-content/uploads/2017/03/guardians-of-the-galaxy-2-imax-poster.jpg"
-        ],
-        [
-            "id" => 6,
-            "name" => "Black Panther",
-            "cover" => "https://i.pinimg.com/originals/01/7a/8f/017a8f1b5d6cd56f8a66459a2715ba3e.png",
-        ],
-        [
-            "id" => 7,
-            "name" => "Avengers: Infinity War",
-            "cover" => "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_.jpg",
-        ],
-        [
-            "id" => 8,
-            "name" => "Spider-Man: No Way Home",
-            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-        ],
-        [
-            "id" => 9,
-            "name" => "Spider-Man: Homecoming",
-            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/kY2c7wKgOfQjvbqe7yVzLTYkxJO.jpg",
-        ],
-        [
-            "id" => 10,
-            "name" => "Doctor Strange",
-            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/uGBVj3bEbCoZbDjjl9wTxcygko1.jpg",
-        ]
-    ];
-}
+require_once("database.php");
 
+function getMovies() {
+global $db;
+    $sql = "SELECT *,movies.id AS movieid FROM magazine.movies INNER JOIN magazine.year ON movies.year_id = magazine.year.id";
+    $result = mysqli_query($db, $sql);
+    if (mysqli_num_rows($result) > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $movies[] = $row;
+}
+        return $movies;
+    }
+}
 
 /**
  * @param $id
  * @return mixed
  */
-function getMovieDetails($id)
+function getMovieDetails($id) {
+    global $db;
+    $stmt = $db->prepare("SELECT tagname FROM movie_tag INNER JOIN magazine.tags ON magazine.movie_tag.tag_id = magazine.tags.id 
+    INNER JOIN movies ON movie_tag.movie_id = movies.id WHERE movie_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $tags = [];
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $tags[] = $row;
+        }
+    return $tags;
+    }
+}
+
+
+function getMovieDetails2($id)
 {
     $tags = [
         1 => [
@@ -130,3 +105,59 @@ function getMovieDetails($id)
 
     return $tags[$id];
 }
+function getMovies2()
+{
+    return [
+        [
+            "id" => 1,
+            "name" => "Avengers: End Game",
+            "cover" => "https://lumiere-a.akamaihd.net/v1/images/p_avengersendgame_19751_e14a0104.jpeg?region=0,0,540,810&width=480",
+        ],
+        [
+            "id" => 2,
+            "name" => "Captain Marvel",
+            "cover" => "https://terrigen-cdn-dev.marvel.com/content/prod/1x/captainmarvel_lob_crd_06.jpg",
+        ],
+        [
+            "id" => 3,
+            "name" => "Black Widow",
+            "cover" => "https://m.media-amazon.com/images/M/MV5BNjRmNDI5MjMtMmFhZi00YzcwLWI4ZGItMGI2MjI0N2Q3YmIwXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg",
+        ],
+        [
+            "id" => 4,
+            "name" => "Thor: The Dark World",
+            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/wp6OxE4poJ4G7c0U2ZIXasTSMR7.jpg",
+        ],
+        [
+            "id" => 5,
+            "name" => "Guardians of the Galaxy",
+            "cover" => "https://collider.com/wp-content/uploads/2017/03/guardians-of-the-galaxy-2-imax-poster.jpg"
+        ],
+        [
+            "id" => 6,
+            "name" => "Black Panther",
+            "cover" => "https://i.pinimg.com/originals/01/7a/8f/017a8f1b5d6cd56f8a66459a2715ba3e.png",
+        ],
+        [
+            "id" => 7,
+            "name" => "Avengers: Infinity War",
+            "cover" => "https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_.jpg",
+        ],
+        [
+            "id" => 8,
+            "name" => "Spider-Man: No Way Home",
+            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+        ],
+        [
+            "id" => 9,
+            "name" => "Spider-Man: Homecoming",
+            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/kY2c7wKgOfQjvbqe7yVzLTYkxJO.jpg",
+        ],
+        [
+            "id" => 10,
+            "name" => "Doctor Strange",
+            "cover" => "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/uGBVj3bEbCoZbDjjl9wTxcygko1.jpg",
+        ]
+    ];
+}
+
